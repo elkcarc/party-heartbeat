@@ -37,26 +37,22 @@ public class HeartbeatOverlay extends Overlay
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        renderProjectiles(graphics);
+        renderDisconnects(graphics);
         return null;
     }
 
-    private void renderProjectiles(final Graphics2D graphics) {
+    private void renderDisconnects(final Graphics2D graphics) {
         for (Player p : client.getPlayers()) {
             if(plugin.partyMemberPulses.containsKey(p.getName()))
             {
                 String lastPulse = String.valueOf(plugin.partyMemberPulses.get(p.getName()));
                 if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks()) {
-                    if(config.showTicks())
-                    {
-                        renderPlayerOverlay(graphics, p, lastPulse, timerColor);
-                    }
                     if(config.showOverlay())
                     {
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
-                    if (config.flashScreen())
+                    if (config.shouldNotifyFlash())
                     {
                         Color originalColor = graphics.getColor();
                         graphics.setColor(new Color(255, 0, 0, 70));
