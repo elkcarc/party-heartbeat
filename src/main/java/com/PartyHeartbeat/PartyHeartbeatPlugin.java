@@ -80,16 +80,6 @@ public class PartyHeartbeatPlugin extends Plugin
 		return configManager.getConfig(PartyHeartbeatConfig.class);
 	}
 
-	@Subscribe
-	protected void onConfigChanged(ConfigChanged event)
-	{
-		if (!event.getGroup().equals("PartyHeartbeat"))
-		{
-			return;
-		}
-		partyMemberPulses.clear();
-		//party.send();
-	}
 
 	@Subscribe
 	protected void onGameState(GameState event)
