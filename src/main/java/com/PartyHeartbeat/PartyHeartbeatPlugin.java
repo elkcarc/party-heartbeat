@@ -97,7 +97,6 @@ public class PartyHeartbeatPlugin extends Plugin
 				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
 			}
 		}
-		log.info(partyMemberPulses.toString());
 		sendPulse();
 	}
 
