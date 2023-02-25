@@ -69,6 +69,13 @@ public class PartyHeartbeatPlugin extends Plugin
 		overlayManager.remove(heartbeatOverlay);
 	}
 
+
+	@Provides
+	PartyHeartbeatConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(PartyHeartbeatConfig.class);
+	}
+
 	@Subscribe
 	protected void onGameState(GameState event)
 	{
