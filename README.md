@@ -4,9 +4,11 @@ Displays an overlay and sends a notification when party members have not sent a 
 ![VzCUsVn](https://user-images.githubusercontent.com/75790554/221335186-9d0d4fe4-c07c-4521-a295-144651cd3e97.png)
 
 
-Sometimes the party plugin can be a little janky, and will have multiple instances of the same user. If this happens, join another party channel and it should resolve itself.
+
 
 F.A.Q.
+
+Sometimes the party plugin can be a little janky, and will have multiple instances of the same user. If this happens, join another party channel and it should resolve itself.
 
 You can test the settings on the plugin by joining a party and setting the max ticks to 0.
 
