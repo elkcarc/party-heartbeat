@@ -65,6 +65,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		partyMemberPulses.clear();
 		wsClient.unregisterMessage(Pulse.class);
 		overlayManager.remove(heartbeatOverlay);
 	}
