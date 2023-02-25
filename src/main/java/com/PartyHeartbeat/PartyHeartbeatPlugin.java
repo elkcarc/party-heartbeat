@@ -1,6 +1,7 @@
 package com.PartyHeartbeat;
 
 import java.util.Hashtable;
+import java.util.Objects;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
@@ -93,7 +94,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("PartyHeartbeat"))
+		if (!event.getGroup().equals("PartyHeartbeat") || Objects.equals(event.getKey(), "sendPulse"))
 		{
 			return;
 		}
