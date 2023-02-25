@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum IconSize
 {
     TEN("10"),
+    FIFTEEN("15"),
     TWENTY("20"),
     THIRTY("30"),
     FORTY("40"),
