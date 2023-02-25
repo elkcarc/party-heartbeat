@@ -83,5 +83,4 @@ public interface PartyHeartbeatConfig extends Config
     {
         return IconSize.TWENTY;
     }
-
 }
