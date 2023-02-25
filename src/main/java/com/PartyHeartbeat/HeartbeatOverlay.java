@@ -56,7 +56,7 @@ public class HeartbeatOverlay extends Overlay
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
-                    if (config.flashScreen())
+                    if (config.shouldNotifyFlash())
                     {
                         Color originalColor = graphics.getColor();
                         graphics.setColor(new Color(255, 0, 0, 70));
