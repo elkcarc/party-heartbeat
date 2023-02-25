@@ -51,7 +51,7 @@ public class HeartbeatOverlay extends Overlay {
                     }
                     if(config.showOverlay())
                     {
-                        BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "icon.png");
+                        BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
                 }

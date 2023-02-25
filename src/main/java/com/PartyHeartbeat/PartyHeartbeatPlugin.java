@@ -4,11 +4,13 @@ import java.util.Hashtable;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
@@ -20,12 +22,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Party Heartbeat",
 	description = "Show Party Disconnections"
 )
 public class PartyHeartbeatPlugin extends Plugin
 {
+
 	@Inject
 	private Client client;
 
@@ -37,6 +41,9 @@ public class PartyHeartbeatPlugin extends Plugin
 
 	@Inject
 	private PartyService party;
+
+	@Inject
+	private Hooks hooks;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -75,13 +82,13 @@ public class PartyHeartbeatPlugin extends Plugin
 		if(event.equals(GameState.LOGGED_IN))
 		{
 			player = client.getLocalPlayer();
+			partyMemberPulses.put(player.getName(), 0);
 		}
 	}
 
 	@Subscribe
 	protected void onPartyChanged(PartyChanged event)
 	{
-		partyMemberPulses.clear();
 		partyMemberPulses = new Hashtable<String, Integer>();
 		for (PartyMember partyMember : party.getMembers())
 		{
@@ -92,7 +99,6 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onUserJoin(UserJoin event)
 	{
-		partyMemberPulses.clear();
 		partyMemberPulses = new Hashtable<String, Integer>();
 		for (PartyMember partyMember : party.getMembers())
 		{
@@ -105,9 +111,11 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		for (PartyMember p : party.getMembers())
 		{
-			if(partyMemberPulses.containsKey(p.getDisplayName()))
+			log.info(p.getDisplayName());
+			if(partyMemberPulses.containsKey(p.getDisplayName()) && p.getDisplayName() != "<unknown>")
 			{
-				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName() + 1));
+
+				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
 			}
 		}
 		sendPulse();
@@ -120,7 +128,8 @@ public class PartyHeartbeatPlugin extends Plugin
 		clientThread.invokeLater(() ->
 		{
 			Player p = event.getPlayer();
-			if (partyMemberPulses.containsKey(p.getName()))
+			log.info(p.getName());
+			if (partyMemberPulses.containsKey(p.getName()) && p.getName() != null)
 			{
 				partyMemberPulses.put(p.getName(), 0);
 			}
@@ -133,7 +142,10 @@ public class PartyHeartbeatPlugin extends Plugin
 		if (party.isInParty())
 		{
 			Pulse p = new Pulse(player);
-			clientThread.invokeLater(() -> party.send(p));
+			if (player != null)
+			{
+				clientThread.invokeLater(() -> party.send(p));
+			}
 		}
 	}
 }
