@@ -20,15 +20,11 @@ public class HeartbeatOverlay extends Overlay
 
     private final PartyHeartbeatPlugin plugin;
     private final PartyHeartbeatConfig config;
-    Color timerColor = Color.WHITE;
     @Inject
     private Client client;
 
     @Inject
     private Notifier notifier;
-
-    private static Clip soundClip;
-
     public boolean hasNotified = false;
     public boolean hasJingled = false;
 
@@ -53,7 +49,6 @@ public class HeartbeatOverlay extends Overlay
         for (Player p : client.getPlayers()) {
             if(plugin.partyMemberPulses.containsKey(p.getName()))
             {
-                String lastPulse = String.valueOf(plugin.partyMemberPulses.get(p.getName()));
                 if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks()) {
                     if(config.showOverlay())
                     {
@@ -73,7 +68,7 @@ public class HeartbeatOverlay extends Overlay
                                     BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
                             AudioFormat format = stream.getFormat();
                             DataLine.Info info = new DataLine.Info(Clip.class, format);
-                            soundClip = (Clip) AudioSystem.getLine(info);
+                            Clip soundClip = (Clip) AudioSystem.getLine(info);
                             soundClip.open(stream);
                             FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
 
@@ -91,24 +86,6 @@ public class HeartbeatOverlay extends Overlay
                     }
                 }
             }
-        }
-    }
-
-    private void renderPlayerOverlay(Graphics2D graphics, Player player, String text, Color color)
-    {
-        Point point = Perspective.localToCanvas(client, player.getLocalLocation(), client.getPlane(), player.getLogicalHeight());
-
-        if (point != null)
-        {
-            FontMetrics fm = graphics.getFontMetrics();
-            int size = fm.getHeight();
-
-            OverlayUtil.renderTextLocation(
-                    graphics,
-                    new Point(point.getX() + size + 5, point.getY()),
-                    text,
-                    color
-            );
         }
     }
 
