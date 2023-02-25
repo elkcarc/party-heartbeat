@@ -12,7 +12,8 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class HeartbeatOverlay extends Overlay {
+public class HeartbeatOverlay extends Overlay
+{
 
     private final PartyHeartbeatPlugin plugin;
     private final PartyHeartbeatConfig config;
