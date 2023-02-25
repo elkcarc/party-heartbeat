@@ -12,6 +12,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -75,6 +76,17 @@ public class PartyHeartbeatPlugin extends Plugin
 	PartyHeartbeatConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PartyHeartbeatConfig.class);
+	}
+
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("PartyHeartbeat"))
+		{
+			return;
+		}
+		partyMemberPulses.clear();
+		//party.send();
 	}
 
 	@Subscribe
