@@ -73,4 +73,15 @@ public interface PartyHeartbeatConfig extends Config
     {
         return 4;
     }
+
+    @ConfigItem(
+            position = 5,
+            keyName = "sendPulse",
+            name = "Send Status",
+            description = "Decides whether or not to send connection status (disable if you don't care about disconnecting)"
+    )
+    default boolean sendPulse()
+    {
+        return true;
+    }
 }

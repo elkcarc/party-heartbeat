@@ -48,11 +48,9 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Inject
 	private HeartbeatOverlay heartbeatOverlay;
 
-	@Provides
-	PartyHeartbeatConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(PartyHeartbeatConfig.class);
-	}
+	@Inject
+	private PartyHeartbeatConfig config;
+
 
 	@Inject
 	Hashtable<String, Integer> partyMemberPulses = new Hashtable<String, Integer>();
@@ -115,10 +113,13 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if (party.isInParty())
 		{
-			Pulse p = new Pulse(client.getLocalPlayer().getName());
-			if (p.getPlayer() != null)
+			if(config.sendPulse())
 			{
-				clientThread.invokeLater(() -> party.send(p));
+				Pulse p = new Pulse(client.getLocalPlayer().getName());
+				if (p.getPlayer() != null)
+				{
+					clientThread.invokeLater(() -> party.send(p));
+				}
 			}
 		}
 	}
