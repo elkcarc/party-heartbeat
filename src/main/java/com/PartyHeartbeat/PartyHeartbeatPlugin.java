@@ -86,6 +86,8 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameTick(GameTick event)
 	{
+		heartbeatOverlay.hasJingled = false;
+		heartbeatOverlay.hasNotified = false;
 		for (PartyMember p : party.getMembers())
 		{
 			if (!p.isLoggedIn())

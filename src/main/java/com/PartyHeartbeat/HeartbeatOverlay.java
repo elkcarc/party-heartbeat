@@ -27,6 +27,9 @@ public class HeartbeatOverlay extends Overlay
     @Inject
     private Notifier notifier;
 
+    public boolean hasNotified = false;
+    public boolean hasJingled = false;
+
     @Inject
     HeartbeatOverlay(PartyHeartbeatPlugin plugin, PartyHeartbeatConfig config)
     {
@@ -55,9 +58,10 @@ public class HeartbeatOverlay extends Overlay
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
-                    if(config.shouldNotify())
+                    if(config.shouldNotify() && hasNotified == false)
                     {
-                        notifier.notify("Party member " + p.getName() + "has Disconnected!");
+                        notifier.notify("Party member " + p.getName() + " has Disconnected!");
+                        hasNotified = true;
                     }
                     if (config.shouldNotifyFlash())
                     {
@@ -70,9 +74,10 @@ public class HeartbeatOverlay extends Overlay
                             flashTimeout = 0;
                         }
                     }
-                    if (config.shouldNotifySound())
+                    if (config.shouldNotifySound() && hasJingled == false)
                     {
                         client.playSoundEffect(3924);
+                        hasJingled = true;
                     }
                 }
             }
