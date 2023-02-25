@@ -45,6 +45,7 @@ public class HeartbeatOverlay extends Overlay
         return null;
     }
 
+    //render the overlay and notify if a player is over the threshold
     private void renderDisconnects(final Graphics2D graphics)
     {
         for (Player p : client.getPlayers())
@@ -92,6 +93,7 @@ public class HeartbeatOverlay extends Overlay
         }
     }
 
+    //image util to render the overlay
     private void renderSymbol(Graphics2D graphics, Player player, BufferedImage image)
     {
         Point textLocation = player.getCanvasImageLocation(image, player.getLogicalHeight() / 2);

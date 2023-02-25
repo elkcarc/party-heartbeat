@@ -5,6 +5,7 @@ import lombok.Value;
 import net.runelite.api.Player;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
+//connection status update
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class Pulse extends PartyMemberMessage

@@ -91,6 +91,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
+	//send a config update over the party
 	@Subscribe
 	protected void onConfigChanged(ConfigChanged event)
 	{
@@ -102,6 +103,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		clientThread.invokeLater(() -> party.send(p));
 	}
 
+	//add a tick to last seen pulse
 	@Subscribe
 	protected void onGameTick(GameTick event)
 	{
@@ -122,7 +124,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		sendPulse();
 	}
 
-
+	//receives the heartbeat pulse (set last seen pulse to 0
 	@Subscribe
 	protected void onPulse(Pulse event)
 	{
@@ -132,7 +134,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		});
 	}
 
-
+	//sends the heartbeat pulse
 	private void sendPulse()
 	{
 		if (party.isInParty())
@@ -148,6 +150,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
+	//clears the tracked users table if a config update is received.
 	@Subscribe
 	protected void onUpdatePartyPulse(UpdatePartyPulse event)
 	{
