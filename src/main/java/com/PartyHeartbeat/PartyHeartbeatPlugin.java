@@ -1,6 +1,7 @@
 package com.PartyHeartbeat;
 
 import java.util.Hashtable;
+import java.util.Objects;
 import javax.inject.Inject;
 
 import com.google.inject.Provides;
@@ -89,7 +90,8 @@ public class PartyHeartbeatPlugin extends Plugin
 		partyMemberPulses = new Hashtable<String, Integer>();
 		for (PartyMember partyMember : party.getMembers())
 		{
-			partyMemberPulses.put(partyMember.getDisplayName(), 0);
+			if (!Objects.equals(partyMember.getDisplayName(), "<unknown>"))
+				partyMemberPulses.put(partyMember.getDisplayName(), 0);
 		}
 	}
 
@@ -99,7 +101,8 @@ public class PartyHeartbeatPlugin extends Plugin
 		partyMemberPulses = new Hashtable<String, Integer>();
 		for (PartyMember partyMember : party.getMembers())
 		{
-			partyMemberPulses.put(partyMember.getDisplayName(), 0);
+			if (!Objects.equals(partyMember.getDisplayName(), "<unknown>"))
+				partyMemberPulses.put(partyMember.getDisplayName(), 0);
 		}
 	}
 
@@ -116,6 +119,8 @@ public class PartyHeartbeatPlugin extends Plugin
 			}
 		}
 		sendPulse();
+
+		log.info(partyMemberPulses.toString());
 	}
 
 
