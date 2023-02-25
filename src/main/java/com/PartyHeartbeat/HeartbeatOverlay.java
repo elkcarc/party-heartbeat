@@ -19,8 +19,6 @@ public class HeartbeatOverlay extends Overlay
     private final PartyHeartbeatPlugin plugin;
     private final PartyHeartbeatConfig config;
     Color timerColor = Color.WHITE;
-    int flashTimeout;
-
     @Inject
     private Client client;
 
@@ -49,7 +47,8 @@ public class HeartbeatOverlay extends Overlay
             if(plugin.partyMemberPulses.containsKey(p.getName()))
             {
                 String lastPulse = String.valueOf(plugin.partyMemberPulses.get(p.getName()));
-                if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks()) {
+                if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks())
+                {
                     if(config.showOverlay())
                     {
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
