@@ -23,10 +23,6 @@ public class HeartbeatOverlay extends Overlay
     @Inject
     private Client client;
 
-    @Inject
-    private Notifier notifier;
-    public boolean hasNotified = false;
-    public boolean hasJingled = false;
 
     @Inject
     HeartbeatOverlay(PartyHeartbeatPlugin plugin, PartyHeartbeatConfig config)
@@ -48,42 +44,10 @@ public class HeartbeatOverlay extends Overlay
     //render the overlay and notify if a player is over the threshold
     private void renderDisconnects(final Graphics2D graphics)
     {
-        for (Player p : client.getPlayers())
+        for (Player p : plugin.disconnectedMembers)
         {
-            if(plugin.partyMemberPulses.containsKey(p.getName()))
-            {
-                if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks())
-                {
-                    if(config.showOverlay())
-                    {
-                        BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
-                        renderSymbol(graphics, p, icon);
-                    }
-                    if(config.shouldNotify() && !hasNotified)
-                    {
-                        notifier.notify("Party member " + p.getName() + " has Disconnected!");
-                        hasNotified = true;
-                    }
-                    if (config.shouldNotifySound() && !hasJingled)
-                    {
-
-                        if (plugin.soundClip != null)
-                        {
-                            FloatControl control = (FloatControl) plugin.soundClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-                            if (control != null)
-                                control.setValue((float) (config.volume() / 2 - 45));
-
-                            plugin.soundClip.setFramePosition(0);
-                            plugin.soundClip.start();
-                        }
-                        else
-                            client.playSoundEffect(3926);
-
-                        hasJingled = true;
-                    }
-                }
-            }
+            BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
+            renderSymbol(graphics, p, icon);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.PartyHeartbeat;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
 import javax.inject.Inject;
@@ -10,7 +12,9 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
@@ -22,6 +26,7 @@ import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 @PluginDescriptor(
@@ -56,9 +61,13 @@ public class PartyHeartbeatPlugin extends Plugin
 	private PartyHeartbeatConfig config;
 	protected Clip soundClip;
 
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	Hashtable<String, Integer> partyMemberPulses = new Hashtable<String, Integer>();
+
+	protected ArrayList<Player> disconnectedMembers = new ArrayList<Player>();
 
 	@Override
 	protected void startUp()
@@ -126,8 +135,50 @@ public class PartyHeartbeatPlugin extends Plugin
 		if (!party.isInParty())
 			return;
 
-		heartbeatOverlay.hasJingled = false;
-		heartbeatOverlay.hasNotified = false;
+		for (Player p : client.getPlayers())
+		{
+			if(partyMemberPulses.containsKey(p.getName()))
+			{
+				if (partyMemberPulses.get(p.getName()) > config.maxTicks())
+				{
+					if(config.shouldNotify())
+					{
+						notifier.notify("Party member " + p.getName() + " has Disconnected!");
+					}
+					if (config.shouldNotifySound())
+					{
+
+						if (soundClip != null)
+						{
+							FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+							if (control != null)
+								control.setValue((float) (config.volume() / 2 - 45));
+
+							soundClip.setFramePosition(0);
+							soundClip.start();
+						}
+						else
+							client.playSoundEffect(3926);
+					}
+					if (partyMemberPulses.get(p.getName()) > config.maxTicks())
+					{
+						if(config.showOverlay())
+						{
+							disconnectedMembers.add(p);
+						}
+					}
+					if(disconnectedMembers.contains(p) && partyMemberPulses.containsKey(p.getName()))
+					{
+						if(partyMemberPulses.get(p.getName()) < config.maxTicks())
+						{
+							disconnectedMembers.remove(p);
+						}
+					}
+				}
+			}
+		}
+
 		for (PartyMember p : party.getMembers())
 		{
 			if (!p.isLoggedIn())
