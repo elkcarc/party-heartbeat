@@ -20,8 +20,8 @@ public interface PartyHeartbeatConfig extends Config {
     @ConfigItem(
             position = 1,
             keyName = "shouldNotify",
-            name = "Notify on Disconnect",
-            description = "Sends a notification event to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
+            name = "Runelite Notify on Disconnect",
+            description = "Sends a notification event (flash/sound/chatbox message) to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
     )
     default boolean shouldNotify() {
         return true;
