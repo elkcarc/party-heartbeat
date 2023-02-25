@@ -39,12 +39,13 @@ public interface PartyHeartbeatConfig extends Config {
 
     @ConfigItem(
             position = 3,
-            keyName = "shouldNotifyFlash",
-            name = "Notification Flash on Disconnect",
-            description = "Sends a custom notification flash on party member DC"
+            keyName = "volume",
+            name = "Notification sound volume",
+            description = "Sets the notifcation volume"
     )
-    default boolean shouldNotifyFlash() {
-        return false;
+    default int volume()
+    {
+        return 50;
     }
 
     @ConfigItem(

@@ -59,20 +59,9 @@ public class HeartbeatOverlay extends Overlay
                     {
                         notifier.notify("Party member " + p.getName() + "has Disconnected!");
                     }
-                    if (config.shouldNotifyFlash())
-                    {
-                        Color originalColor = graphics.getColor();
-                        graphics.setColor(new Color(255, 0, 0, 70));
-                        graphics.fill(client.getCanvas().getBounds());
-                        graphics.setColor(originalColor);
-                        if (++flashTimeout >= 15)
-                        {
-                            flashTimeout = 0;
-                        }
-                    }
                     if (config.shouldNotifySound())
                     {
-                        client.playSoundEffect(3924);
+                        client.playSoundEffect(3924, this.config.volume());
                     }
                 }
             }
