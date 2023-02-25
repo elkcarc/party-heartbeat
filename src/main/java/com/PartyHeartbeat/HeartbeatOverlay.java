@@ -19,8 +19,6 @@ public class HeartbeatOverlay extends Overlay
     private final PartyHeartbeatPlugin plugin;
     private final PartyHeartbeatConfig config;
     Color timerColor = Color.WHITE;
-    int flashTimeout;
-
     @Inject
     private Client client;
 
@@ -58,25 +56,14 @@ public class HeartbeatOverlay extends Overlay
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
-                    if(config.shouldNotify() && hasNotified == false)
+                    if(config.shouldNotify() && !hasNotified)
                     {
                         notifier.notify("Party member " + p.getName() + " has Disconnected!");
                         hasNotified = true;
                     }
-                    if (config.shouldNotifyFlash())
+                    if (config.shouldNotifySound() && !hasJingled)
                     {
-                        Color originalColor = graphics.getColor();
-                        graphics.setColor(new Color(255, 0, 0, 70));
-                        graphics.fill(client.getCanvas().getBounds());
-                        graphics.setColor(originalColor);
-                        if (++flashTimeout >= 15)
-                        {
-                            flashTimeout = 0;
-                        }
-                    }
-                    if (config.shouldNotifySound() && hasJingled == false)
-                    {
-                        client.playSoundEffect(3924);
+                        client.playSoundEffect(3924, this.config.volume());
                         hasJingled = true;
                     }
                 }
