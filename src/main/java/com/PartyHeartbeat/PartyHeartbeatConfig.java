@@ -16,6 +16,17 @@ public interface PartyHeartbeatConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            position = 1,
+            keyName = "iconSize",
+            name = "Select the icon size",
+            description = "Select the size you want your disconnected icon to be"
+    )
+    default IconSize iconSize()
+    {
+        return IconSize.TWENTY;
+    }
+
 
     @ConfigItem(
             position = 1,

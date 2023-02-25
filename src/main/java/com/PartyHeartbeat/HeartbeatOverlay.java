@@ -53,7 +53,7 @@ public class HeartbeatOverlay extends Overlay
                 if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks()) {
                     if(config.showOverlay())
                     {
-                        BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
+                        BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
                         renderSymbol(graphics, p, icon);
                     }
                     if(config.shouldNotify() && !hasNotified)
