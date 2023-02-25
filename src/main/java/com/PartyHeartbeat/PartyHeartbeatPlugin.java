@@ -12,6 +12,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -21,8 +22,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Party Heartbeat",
-	description = "Show Party Disconnections"
+		name = "Party Heartbeat",
+		description = "Show Party Disconnections"
 )
 public class PartyHeartbeatPlugin extends Plugin
 {
@@ -59,6 +60,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	protected void startUp()
 	{
 		wsClient.registerMessage(Pulse.class);
+		wsClient.registerMessage(UpdatePartyPulse.class);
 		overlayManager.add(heartbeatOverlay);
 	}
 
@@ -67,6 +69,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		partyMemberPulses.clear();
 		wsClient.unregisterMessage(Pulse.class);
+		wsClient.unregisterMessage(UpdatePartyPulse.class);
 		overlayManager.remove(heartbeatOverlay);
 	}
 
@@ -84,6 +87,17 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
 		}
+	}
+
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("PartyHeartbeat"))
+		{
+			return;
+		}
+		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
+		clientThread.invokeLater(() -> party.send(p));
 	}
 
 	@Subscribe
@@ -130,5 +144,14 @@ public class PartyHeartbeatPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	protected void onUpdatePartyPulse(UpdatePartyPulse event)
+	{
+		clientThread.invokeLater(() ->
+		{
+			partyMemberPulses.clear();
+		});
 	}
 }
