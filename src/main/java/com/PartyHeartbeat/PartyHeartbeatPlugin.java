@@ -1,8 +1,10 @@
 package com.PartyHeartbeat;
 
+import java.io.BufferedInputStream;
 import java.util.Hashtable;
 import java.util.Objects;
 import javax.inject.Inject;
+import javax.sound.sampled.*;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,7 @@ public class PartyHeartbeatPlugin extends Plugin
 
 	@Inject
 	private PartyHeartbeatConfig config;
+	protected Clip soundClip;
 
 
 	@Inject
@@ -60,6 +63,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		soundClip = loadSoundClip(config.volume());
 		wsClient.registerMessage(Pulse.class);
 		wsClient.registerMessage(UpdatePartyPulse.class);
 		overlayManager.add(heartbeatOverlay);
@@ -68,6 +72,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		soundClip.close();
 		partyMemberPulses.clear();
 		wsClient.unregisterMessage(Pulse.class);
 		wsClient.unregisterMessage(UpdatePartyPulse.class);
@@ -98,6 +103,14 @@ public class PartyHeartbeatPlugin extends Plugin
 		if (!event.getGroup().equals("PartyHeartbeat") || !Objects.equals(event.getKey(), "sendPulse"))
 		{
 			return;
+		}
+		if (Objects.equals(event.getKey(), "shouldNotifySound"))
+		{
+			if (soundClip == null)
+				soundClip = loadSoundClip(config.volume());
+			else
+				soundClip.close();
+
 		}
 		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
 		if(party.isInParty())
@@ -161,5 +174,28 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			partyMemberPulses.clear();
 		});
+	}
+
+	protected Clip loadSoundClip(int volume)
+	{
+		try
+		{
+			AudioInputStream stream = AudioSystem.getAudioInputStream(new
+					BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
+			AudioFormat format = stream.getFormat();
+			DataLine.Info info = new DataLine.Info(Clip.class, format);
+			Clip soundClip = (Clip) AudioSystem.getLine(info);
+			soundClip.open(stream);
+			FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+			if (control != null)
+					control.setValue((float) (volume / 2 - 45));
+
+			return soundClip;
+		}
+		catch (Exception exception)
+		{
+			return null;
+		}
 	}
 }

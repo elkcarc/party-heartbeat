@@ -66,26 +66,20 @@ public class HeartbeatOverlay extends Overlay
                     }
                     if (config.shouldNotifySound() && !hasJingled)
                     {
-                        try
+
+                        if (plugin.soundClip != null)
                         {
-                            AudioInputStream stream = AudioSystem.getAudioInputStream(new
-                                    BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
-                            AudioFormat format = stream.getFormat();
-                            DataLine.Info info = new DataLine.Info(Clip.class, format);
-                            Clip soundClip = (Clip) AudioSystem.getLine(info);
-                            soundClip.open(stream);
-                            FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+                            FloatControl control = (FloatControl) plugin.soundClip.getControl(FloatControl.Type.MASTER_GAIN);
 
                             if (control != null)
-                                control.setValue((float) (this.config.volume() / 2 - 45));
+                                control.setValue((float) (config.volume() / 2 - 45));
 
-                            soundClip.setFramePosition(0);
-                            soundClip.start();
+                            plugin.soundClip.setFramePosition(0);
+                            plugin.soundClip.start();
                         }
-                        catch (Exception exception)
-                        {
+                        else
                             client.playSoundEffect(3926);
-                        }
+
                         hasJingled = true;
                     }
                 }
