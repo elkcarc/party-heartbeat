@@ -12,7 +12,8 @@ public interface PartyHeartbeatConfig extends Config {
             name = "Show Overlay",
             description = "Show the disconnected icon over the player"
     )
-    default boolean showOverlay() {
+    default boolean showOverlay()
+    {
         return true;
     }
 
@@ -34,7 +35,8 @@ public interface PartyHeartbeatConfig extends Config {
             name = "Runelite notification",
             description = "Sends a notification event (flash/sound/chatbox message) to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
     )
-    default boolean shouldNotify() {
+    default boolean shouldNotify()
+    {
         return false;
     }
 
@@ -44,7 +46,8 @@ public interface PartyHeartbeatConfig extends Config {
             name = "Notification Sound on disconnect",
             description = "Sends a notification sound on party member DC"
     )
-    default boolean shouldNotifySound() {
+    default boolean shouldNotifySound()
+    {
         return true;
     }
 
@@ -65,7 +68,8 @@ public interface PartyHeartbeatConfig extends Config {
             name = "Ticks before Alert",
             description = "Maximum ticks without notification pulse before overlay render"
     )
-    default int maxTicks() {
+    default int maxTicks()
+    {
         return 3;
     }
 }
