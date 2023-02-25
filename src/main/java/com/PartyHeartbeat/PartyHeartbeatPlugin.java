@@ -111,8 +111,11 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		for (PartyMember p : party.getMembers())
 		{
+			if (!p.isLoggedIn())
+				continue;
+
 			log.info(p.getDisplayName());
-			if(partyMemberPulses.containsKey(p.getDisplayName()) && p.getDisplayName() != "<unknown>")
+			if(partyMemberPulses.containsKey(p.getDisplayName()))
 			{
 
 				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
