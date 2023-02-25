@@ -81,6 +81,17 @@ public class PartyHeartbeatPlugin extends Plugin
 	}
 
 	@Subscribe
+	protected void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("PartyHeartbeat"))
+		{
+			return;
+		}
+		partyMemberPulses.clear();
+		//party.send();
+	}
+
+	@Subscribe
 	protected void onGameState(GameState event)
 	{
 		if(event.equals(GameState.LOGGED_IN))
