@@ -68,14 +68,4 @@ public interface PartyHeartbeatConfig extends Config {
     default int maxTicks() {
         return 3;
     }
-
-    @ConfigItem(
-            position = 4,
-            keyName = "overlayOpacity",
-            name = "Overlay Opacity",
-            description = "Controls how transparent the disconnection icon appears 10.0f to 0.0f"
-    )
-    default int overlayOpacity() {
-        return 50;
-    }
 }
