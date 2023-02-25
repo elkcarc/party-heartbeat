@@ -100,7 +100,10 @@ public class PartyHeartbeatPlugin extends Plugin
 			return;
 		}
 		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
-		clientThread.invokeLater(() -> party.send(p));
+		if(party.isInParty())
+		{
+			clientThread.invokeLater(() -> party.send(p));
+		}
 	}
 
 	//add a tick to last seen pulse
