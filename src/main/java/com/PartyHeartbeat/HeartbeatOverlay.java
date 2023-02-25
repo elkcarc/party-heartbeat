@@ -64,7 +64,7 @@ public class HeartbeatOverlay extends Overlay
                     }
                     if (config.shouldNotifySound() && !hasJingled)
                     {
-                        client.playSoundEffect(3924, this.config.volume());
+                        client.playSoundEffect(3926, this.config.volume());
                         hasJingled = true;
                     }
                 }
