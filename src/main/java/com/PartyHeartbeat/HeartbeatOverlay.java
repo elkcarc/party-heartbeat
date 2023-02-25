@@ -44,10 +44,13 @@ public class HeartbeatOverlay extends Overlay
     //render the overlay and notify if a player is over the threshold
     private void renderDisconnects(final Graphics2D graphics)
     {
-        for (Player p : plugin.disconnectedMembers)
+        for (Player p : client.getPlayers())
         {
-            BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
-            renderSymbol(graphics, p, icon);
+            if(plugin.disconnectedMembers.contains(p))
+            {
+                BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
+                renderSymbol(graphics, p, icon);
+            }
         }
     }
 
