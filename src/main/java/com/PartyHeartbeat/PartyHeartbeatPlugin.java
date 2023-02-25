@@ -83,6 +83,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		soundClip.close();
 		partyMemberPulses.clear();
+		disconnectedMembers.clear();
 		wsClient.unregisterMessage(Pulse.class);
 		wsClient.unregisterMessage(UpdatePartyPulse.class);
 		overlayManager.remove(heartbeatOverlay);
@@ -168,12 +169,12 @@ public class PartyHeartbeatPlugin extends Plugin
 							disconnectedMembers.add(p);
 						}
 					}
-					if(disconnectedMembers.contains(p) && partyMemberPulses.containsKey(p.getName()))
+				}
+				if(disconnectedMembers.contains(p) && partyMemberPulses.containsKey(p.getName()))
+				{
+					if(partyMemberPulses.get(p.getName()) < config.maxTicks())
 					{
-						if(partyMemberPulses.get(p.getName()) < config.maxTicks())
-						{
-							disconnectedMembers.remove(p);
-						}
+						disconnectedMembers.remove(p);
 					}
 				}
 			}
