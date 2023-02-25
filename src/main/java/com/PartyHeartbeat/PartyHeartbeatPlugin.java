@@ -162,20 +162,6 @@ public class PartyHeartbeatPlugin extends Plugin
 						else
 							client.playSoundEffect(3926);
 					}
-					if (partyMemberPulses.get(p.getName()) > config.maxTicks())
-					{
-						if(config.showOverlay())
-						{
-							disconnectedMembers.add(p);
-						}
-					}
-				}
-				if(disconnectedMembers.contains(p) && partyMemberPulses.containsKey(p.getName()))
-				{
-					if(partyMemberPulses.get(p.getName()) < config.maxTicks())
-					{
-						disconnectedMembers.remove(p);
-					}
 				}
 			}
 		}

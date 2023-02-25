@@ -37,7 +37,11 @@ public class HeartbeatOverlay extends Overlay
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        renderDisconnects(graphics);
+
+        if(config.showOverlay())
+        {
+            renderDisconnects(graphics);
+        }
         return null;
     }
 
@@ -46,10 +50,13 @@ public class HeartbeatOverlay extends Overlay
     {
         for (Player p : client.getPlayers())
         {
-            if(plugin.disconnectedMembers.contains(p))
+            if(plugin.partyMemberPulses.containsKey(p.getName()))
             {
-                BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
-                renderSymbol(graphics, p, icon);
+                if(plugin.partyMemberPulses.get(p.getName()) > config.maxTicks())
+                {
+                    BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
+                    renderSymbol(graphics, p, icon);
+                }
             }
         }
     }
