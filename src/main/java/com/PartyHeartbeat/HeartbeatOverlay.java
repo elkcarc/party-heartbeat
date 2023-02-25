@@ -2,7 +2,6 @@ package com.PartyHeartbeat;
 
 import net.runelite.api.Point;
 import net.runelite.api.*;
-import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -10,10 +9,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
-import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 
 public class HeartbeatOverlay extends Overlay
 {

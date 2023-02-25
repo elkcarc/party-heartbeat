@@ -1,8 +1,6 @@
 package com.PartyHeartbeat;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
 import javax.inject.Inject;
@@ -26,7 +24,6 @@ import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 @PluginDescriptor(
@@ -67,7 +64,11 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Inject
 	Hashtable<String, Integer> partyMemberPulses = new Hashtable<String, Integer>();
 
-	protected ArrayList<Player> disconnectedMembers = new ArrayList<Player>();
+	@Provides
+	PartyHeartbeatConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(PartyHeartbeatConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -83,19 +84,10 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		soundClip.close();
 		partyMemberPulses.clear();
-		disconnectedMembers.clear();
 		wsClient.unregisterMessage(Pulse.class);
 		wsClient.unregisterMessage(UpdatePartyPulse.class);
 		overlayManager.remove(heartbeatOverlay);
 	}
-
-
-	@Provides
-	PartyHeartbeatConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(PartyHeartbeatConfig.class);
-	}
-
 
 	@Subscribe
 	protected void onGameState(GameState event)
@@ -138,32 +130,7 @@ public class PartyHeartbeatPlugin extends Plugin
 
 		for (Player p : client.getPlayers())
 		{
-			if(partyMemberPulses.containsKey(p.getName()))
-			{
-				if (partyMemberPulses.get(p.getName()) > config.maxTicks())
-				{
-					if(config.shouldNotify())
-					{
-						notifier.notify("Party member " + p.getName() + " has Disconnected!");
-					}
-					if (config.shouldNotifySound())
-					{
-
-						if (soundClip != null)
-						{
-							FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-							if (control != null)
-								control.setValue((float) (config.volume() / 2 - 45));
-
-							soundClip.setFramePosition(0);
-							soundClip.start();
-						}
-						else
-							client.playSoundEffect(3926);
-					}
-				}
-			}
+			notifyPlayers(p);
 		}
 
 		for (PartyMember p : party.getMembers())
@@ -176,6 +143,59 @@ public class PartyHeartbeatPlugin extends Plugin
 			}
 		}
 		sendPulse();
+	}
+
+	private void notifyPlayers(Player p)
+	{
+		if(partyMemberPulses.containsKey(p.getName()))
+		{
+			if (partyMemberPulses.get(p.getName()) > config.maxTicks())
+			{
+				if(config.shouldNotify())
+				{
+					notifier.notify("Party member " + p.getName() + " has Disconnected!");
+				}
+				if (config.shouldNotifySound())
+				{
+
+					if (soundClip != null)
+					{
+						FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+						if (control != null)
+							control.setValue((float) (config.volume() / 2 - 45));
+
+						soundClip.setFramePosition(0);
+						soundClip.start();
+					}
+					else
+						client.playSoundEffect(3926);
+				}
+			}
+		}
+	}
+
+	protected Clip loadSoundClip(int volume)
+	{
+		try
+		{
+			AudioInputStream stream = AudioSystem.getAudioInputStream(new
+					BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
+			AudioFormat format = stream.getFormat();
+			DataLine.Info info = new DataLine.Info(Clip.class, format);
+			Clip soundClip = (Clip) AudioSystem.getLine(info);
+			soundClip.open(stream);
+			FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+			if (control != null)
+				control.setValue((float) (volume / 2 - 45));
+
+			return soundClip;
+		}
+		catch (Exception exception)
+		{
+			return null;
+		}
 	}
 
 	//receives the heartbeat pulse (set last seen pulse to 0
@@ -212,28 +232,5 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			partyMemberPulses.clear();
 		});
-	}
-
-	protected Clip loadSoundClip(int volume)
-	{
-		try
-		{
-			AudioInputStream stream = AudioSystem.getAudioInputStream(new
-					BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
-			AudioFormat format = stream.getFormat();
-			DataLine.Info info = new DataLine.Info(Clip.class, format);
-			Clip soundClip = (Clip) AudioSystem.getLine(info);
-			soundClip.open(stream);
-			FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-			if (control != null)
-					control.setValue((float) (volume / 2 - 45));
-
-			return soundClip;
-		}
-		catch (Exception exception)
-		{
-			return null;
-		}
 	}
 }
