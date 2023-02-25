@@ -52,11 +52,11 @@ public interface PartyHeartbeatConfig extends Config {
             position = 3,
             keyName = "volume",
             name = "Sound volume",
-            description = "Sets the notifcation volume"
+            description = "Sets the notification volume (requires client restart)"
     )
     default int volume()
     {
-        return 50;
+        return 80;
     }
 
     @ConfigItem(
