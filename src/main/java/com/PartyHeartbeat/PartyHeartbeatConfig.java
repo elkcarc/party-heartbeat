@@ -75,7 +75,7 @@ public interface PartyHeartbeatConfig extends Config {
             name = "Overlay Opacity",
             description = "Controls how transparent the disconnection icon appears 10.0f to 0.0f"
     )
-    default float overlayOpacity() {
-        return 10.0f;
+    default int overlayOpacity() {
+        return 50;
     }
 }

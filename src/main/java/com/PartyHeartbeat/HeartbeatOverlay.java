@@ -95,7 +95,7 @@ public class HeartbeatOverlay extends Overlay
         Point textLocation = player.getCanvasImageLocation(image, player.getLogicalHeight() / 2);
         if (textLocation != null)
         {
-            image = fadeImage(image,config.overlayOpacity() / 10.0f ,50);
+            image = fadeImage(image,config.overlayOpacity() / 100.0f ,50);
             OverlayUtil.renderImageLocation(graphics, textLocation, image);
         }
     }
