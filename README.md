@@ -11,7 +11,7 @@ F.A.Q.
 
 Sometimes the party plugin can be a little janky, and will have multiple instances of the same user. If this happens, join another party channel and it should resolve itself.
 
-You can test the settings on the plugin by joining a party and setting the max ticks to 0.
+Testing the plugin is as simple as getting a friend in the party with the plugin on to close their client.
 
 The runelite notifications are disabled by default.
 If you want to use the runelite notification settings, they can be found at:
