@@ -26,13 +26,35 @@ public interface PartyHeartbeatConfig extends Config {
         return true;
     }
 
+
     @ConfigItem(
             position = 2,
+            keyName = "shouldNotify",
+            name = "Notify on Disconnect",
+            description = "Sends a notification event to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
+    )
+    default boolean shouldNotify() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 3,
+            keyName = "shouldNotifyCustom",
+            name = "Bigger Notify on Disconnect",
+            description = "Sends a custom notification event on party member DC"
+    )
+    default boolean shouldNotifyCustom() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 4,
             keyName = "maxTicks",
             name = "Maximum ticks",
             description = "Maximum ticks without pulse before overlay render"
     )
     default int maxTicks() {
-        return 2;
+        return 3;
     }
+
 }
