@@ -67,6 +67,10 @@ public class HeartbeatOverlay extends Overlay
                             flashTimeout = 0;
                         }
                     }
+                    if (config.shouldNotifySound())
+                    {
+                        //todo add sound
+                    }
                 }
             }
         }
