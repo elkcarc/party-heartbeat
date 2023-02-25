@@ -1,5 +1,6 @@
 # Party Heartbeat
-Displays an overlay and sends a notification when party members have not sent a ping for some configurable amount of ticks.
+Displays an overlay and sends a notification when party members have not sent a ping for some configurable amount of ticks. This can be very useful to save your hcim friends at content where escape crystals are available.
+
 Sometimes the party plugin can be a little janky, and will have multiple instances of the same user. If this happens, join another party channel and it should resolve itself.
 
 F.A.Q.
