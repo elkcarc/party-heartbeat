@@ -56,7 +56,7 @@ public interface PartyHeartbeatConfig extends Config {
     )
     default int volume()
     {
-        return 80;
+        return 50;
     }
 
     @ConfigItem(
@@ -66,6 +66,6 @@ public interface PartyHeartbeatConfig extends Config {
             description = "Maximum ticks without notification pulse before overlay render"
     )
     default int maxTicks() {
-        return 3;
+        return 4;
     }
 }
