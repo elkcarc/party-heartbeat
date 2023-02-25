@@ -30,11 +30,9 @@ public class HeartbeatOverlay extends Overlay
         this.config = config;
     }
 
-
     @Override
     public Dimension render(Graphics2D graphics)
     {
-
         if(config.showOverlay())
         {
             renderDisconnects(graphics);
