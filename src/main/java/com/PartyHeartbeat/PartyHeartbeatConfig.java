@@ -31,11 +31,11 @@ public interface PartyHeartbeatConfig extends Config {
     @ConfigItem(
             position = 1,
             keyName = "shouldNotify",
-            name = "Runelite notification on disconnect",
+            name = "Runelite notification",
             description = "Sends a notification event (flash/sound/chatbox message) to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
     )
     default boolean shouldNotify() {
-        return true;
+        return false;
     }
 
     @ConfigItem(
@@ -45,13 +45,13 @@ public interface PartyHeartbeatConfig extends Config {
             description = "Sends a notification sound on party member DC"
     )
     default boolean shouldNotifySound() {
-        return false;
+        return true;
     }
 
     @ConfigItem(
             position = 3,
             keyName = "volume",
-            name = "Notification sound volume",
+            name = "Sound volume",
             description = "Sets the notifcation volume"
     )
     default int volume()
@@ -62,7 +62,7 @@ public interface PartyHeartbeatConfig extends Config {
     @ConfigItem(
             position = 4,
             keyName = "maxTicks",
-            name = "Maximum ticks without connection",
+            name = "Ticks before Notification",
             description = "Maximum ticks without notification pulse before overlay render"
     )
     default int maxTicks() {
