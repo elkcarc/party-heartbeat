@@ -2,6 +2,7 @@ package com.PartyHeartbeat;
 
 import net.runelite.api.Point;
 import net.runelite.api.*;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -23,6 +24,8 @@ public class HeartbeatOverlay extends Overlay
     @Inject
     private Client client;
 
+    @Inject
+    private Notifier notifier;
 
     @Inject
     HeartbeatOverlay(PartyHeartbeatPlugin plugin, PartyHeartbeatConfig config)
@@ -52,6 +55,10 @@ public class HeartbeatOverlay extends Overlay
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon.png");
                         renderSymbol(graphics, p, icon);
                     }
+                    if(config.shouldNotify())
+                    {
+                        notifier.notify("Party member " + p.getName() + "has Disconnected!");
+                    }
                     if (config.shouldNotifyFlash())
                     {
                         Color originalColor = graphics.getColor();
@@ -65,7 +72,7 @@ public class HeartbeatOverlay extends Overlay
                     }
                     if (config.shouldNotifySound())
                     {
-                        //todo add sound
+                        client.playSoundEffect(3924);
                     }
                 }
             }
