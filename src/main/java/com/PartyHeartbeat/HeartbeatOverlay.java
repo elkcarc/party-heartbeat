@@ -70,9 +70,9 @@ public class HeartbeatOverlay extends Overlay
                         try
                         {
                             AudioInputStream stream = AudioSystem.getAudioInputStream(new
-                                    BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("name.wav")));
+                                    BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("/util/offerdeclined.wav")));
                             AudioFormat format = stream.getFormat();
-                            Line.Info info = new DataLine.Info(Clip.class, format);
+                            DataLine.Info info = new DataLine.Info(Clip.class, format);
                             soundClip = (Clip) AudioSystem.getLine(info);
                             soundClip.open(stream);
                             FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -85,7 +85,7 @@ public class HeartbeatOverlay extends Overlay
                         }
                         catch (Exception exception)
                         {
-                            client.playSoundEffect(3926, this.config.volume());
+                            client.playSoundEffect(3926);
                         }
                         hasJingled = true;
                     }
