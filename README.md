@@ -12,7 +12,8 @@ Sometimes the party plugin can be a little janky, and will have multiple instanc
 
 You can test the settings on the plugin by joining a party and setting the max ticks to 0.
 
-If you want to use the runelite notification settings, they can be found at
+The runelite notifications are disabled by default.
+If you want to use the runelite notification settings, they can be found at:
 
 ![image](https://user-images.githubusercontent.com/42009371/221331683-5ec46d49-7f30-431f-a582-ff21eb3bad1f.png)
 
