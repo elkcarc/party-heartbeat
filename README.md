@@ -6,4 +6,4 @@ For the runelite notification settings
 
 ![image](https://user-images.githubusercontent.com/42009371/221331683-5ec46d49-7f30-431f-a582-ff21eb3bad1f.png)
 
-![image](https://user-images.githubusercontent.com/42009371/221331672-fe7f5ab7-95ee-485b-bf3e-6ecd75fe0d47.png)
+![image](https://user-images.githubusercontent.com/42009371/221331720-446ec9c5-b876-4e57-ab13-e127dd123e2b.png)
