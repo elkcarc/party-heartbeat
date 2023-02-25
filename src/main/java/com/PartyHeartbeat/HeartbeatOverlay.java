@@ -45,11 +45,14 @@ public class HeartbeatOverlay extends Overlay
         return null;
     }
 
-    private void renderDisconnects(final Graphics2D graphics) {
-        for (Player p : client.getPlayers()) {
+    private void renderDisconnects(final Graphics2D graphics)
+    {
+        for (Player p : client.getPlayers())
+        {
             if(plugin.partyMemberPulses.containsKey(p.getName()))
             {
-                if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks()) {
+                if (plugin.partyMemberPulses.get(p.getName()) > config.maxTicks())
+                {
                     if(config.showOverlay())
                     {
                         BufferedImage icon = ImageUtil.loadImageResource(PartyHeartbeatPlugin.class, "/util/icon" + config.iconSize() + ".png");
