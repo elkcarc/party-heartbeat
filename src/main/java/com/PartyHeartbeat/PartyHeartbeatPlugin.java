@@ -57,8 +57,6 @@ public class PartyHeartbeatPlugin extends Plugin
 		return configManager.getConfig(PartyHeartbeatConfig.class);
 	}
 
-	private Player player;
-
 	@Inject
 	Hashtable<String, Integer> partyMemberPulses = new Hashtable<String, Integer>();
 
@@ -81,8 +79,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if(event.equals(GameState.LOGGED_IN))
 		{
-			player = client.getLocalPlayer();
-			partyMemberPulses.put(player.getName(), 0);
+			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
 		}
 	}
 
@@ -111,10 +108,10 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		for (PartyMember p : party.getMembers())
 		{
-			log.info(p.getDisplayName());
-			if(partyMemberPulses.containsKey(p.getDisplayName()) && p.getDisplayName() != "<unknown>")
+			if (!p.isLoggedIn())
+				continue;
+			if(partyMemberPulses.containsKey(p.getDisplayName()))
 			{
-
 				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
 			}
 		}
@@ -127,11 +124,11 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		clientThread.invokeLater(() ->
 		{
-			Player p = event.getPlayer();
-			log.info(p.getName());
-			if (partyMemberPulses.containsKey(p.getName()) && p.getName() != null)
+			String p = event.getPlayer();
+			log.info(p);
+			if (partyMemberPulses.containsKey(p) && p != null)
 			{
-				partyMemberPulses.put(p.getName(), 0);
+				partyMemberPulses.put(p, 0);
 			}
 		});
 	}
@@ -141,8 +138,8 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if (party.isInParty())
 		{
-			Pulse p = new Pulse(player);
-			if (player != null)
+			Pulse p = new Pulse(client.getLocalPlayer().getName());
+			if (p.getPlayer() != null)
 			{
 				clientThread.invokeLater(() -> party.send(p));
 			}

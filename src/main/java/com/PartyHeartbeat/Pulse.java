@@ -9,5 +9,5 @@ import net.runelite.client.party.messages.PartyMemberMessage;
 @EqualsAndHashCode(callSuper = true)
 public class Pulse extends PartyMemberMessage
 {
-	Player player;
+	String player;
 }
