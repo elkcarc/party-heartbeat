@@ -62,7 +62,7 @@ public interface PartyHeartbeatConfig extends Config {
     @ConfigItem(
             position = 4,
             keyName = "maxTicks",
-            name = "Ticks before Notification",
+            name = "Ticks before Alert",
             description = "Maximum ticks without notification pulse before overlay render"
     )
     default int maxTicks() {
