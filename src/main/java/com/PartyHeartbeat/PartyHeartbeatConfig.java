@@ -24,7 +24,7 @@ public interface PartyHeartbeatConfig extends Config {
     )
     default IconSize iconSize()
     {
-        return IconSize.TWENTY;
+        return IconSize.FIFTEEN;
     }
 
 
