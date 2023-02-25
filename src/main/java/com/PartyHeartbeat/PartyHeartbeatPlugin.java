@@ -94,7 +94,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("PartyHeartbeat") || Objects.equals(event.getKey(), "sendPulse"))
+		if (!event.getGroup().equals("PartyHeartbeat") || !Objects.equals(event.getKey(), "sendPulse"))
 		{
 			return;
 		}
