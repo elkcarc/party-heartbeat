@@ -10,9 +10,10 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
+import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
+import java.io.BufferedInputStream;
 
 public class HeartbeatOverlay extends Overlay
 {
@@ -25,6 +26,8 @@ public class HeartbeatOverlay extends Overlay
 
     @Inject
     private Notifier notifier;
+
+    private static Clip soundClip;
 
     public boolean hasNotified = false;
     public boolean hasJingled = false;
@@ -64,7 +67,26 @@ public class HeartbeatOverlay extends Overlay
                     }
                     if (config.shouldNotifySound() && !hasJingled)
                     {
-                        client.playSoundEffect(3924, this.config.volume());
+                        try
+                        {
+                            AudioInputStream stream = AudioSystem.getAudioInputStream(new
+                                    BufferedInputStream(PartyHeartbeatPlugin.class.getResourceAsStream("name.wav")));
+                            AudioFormat format = stream.getFormat();
+                            Line.Info info = new DataLine.Info(Clip.class, format);
+                            soundClip = (Clip) AudioSystem.getLine(info);
+                            soundClip.open(stream);
+                            FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+                            if (control != null)
+                                control.setValue((float) (this.config.volume() / 2 - 45));
+
+                            soundClip.setFramePosition(0);
+                            soundClip.start();
+                        }
+                        catch (Exception exception)
+                        {
+                            client.playSoundEffect(3926, this.config.volume());
+                        }
                         hasJingled = true;
                     }
                 }
@@ -98,5 +120,4 @@ public class HeartbeatOverlay extends Overlay
             OverlayUtil.renderImageLocation(graphics, textLocation, image);
         }
     }
-
 }
