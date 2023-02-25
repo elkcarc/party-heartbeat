@@ -84,26 +84,6 @@ public class PartyHeartbeatPlugin extends Plugin
 	}
 
 	@Subscribe
-	protected void onPartyChanged(PartyChanged event)
-	{
-		partyMemberPulses = new Hashtable<String, Integer>();
-		for (PartyMember partyMember : party.getMembers())
-		{
-			partyMemberPulses.put(partyMember.getDisplayName(), 0);
-		}
-	}
-
-	@Subscribe
-	protected void onUserJoin(UserJoin event)
-	{
-		partyMemberPulses = new Hashtable<String, Integer>();
-		for (PartyMember partyMember : party.getMembers())
-		{
-			partyMemberPulses.put(partyMember.getDisplayName(), 0);
-		}
-	}
-
-	@Subscribe
 	protected void onGameTick(GameTick event)
 	{
 		for (PartyMember p : party.getMembers())
@@ -115,6 +95,7 @@ public class PartyHeartbeatPlugin extends Plugin
 				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
 			}
 		}
+		log.info(partyMemberPulses.toString());
 		sendPulse();
 	}
 
@@ -124,12 +105,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		clientThread.invokeLater(() ->
 		{
-			String p = event.getPlayer();
-			log.info(p);
-			if (partyMemberPulses.containsKey(p) && p != null)
-			{
-				partyMemberPulses.put(p, 0);
-			}
+			partyMemberPulses.put(event.getPlayer(), 0);
 		});
 	}
 
