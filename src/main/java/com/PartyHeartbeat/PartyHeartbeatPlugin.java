@@ -106,14 +106,6 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			return;
 		}
-		if (Objects.equals(event.getKey(), "shouldNotifySound"))
-		{
-			if (soundClip == null || !soundClip.isOpen())
-				soundClip = loadSoundClip(config.volume());
-			else
-				soundClip.close();
-
-		}
 		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
 		if(party.isInParty())
 		{
