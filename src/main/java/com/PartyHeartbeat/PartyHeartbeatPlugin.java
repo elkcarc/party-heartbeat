@@ -96,6 +96,14 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
 		}
+		if(event.equals(GameState.HOPPING))
+		{
+			UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
+			if(party.isInParty())
+			{
+				clientThread.invokeLater(() -> party.send(p));
+			}
+		}
 	}
 
 	//send a config update over the party
