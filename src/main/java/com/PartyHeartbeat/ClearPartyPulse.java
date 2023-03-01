@@ -7,7 +7,7 @@ import net.runelite.client.party.messages.PartyMemberMessage;
 //a message type that triggers a reset of the user's being tracked
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class UpdatePartyPulse extends PartyMemberMessage
+public class ClearPartyPulse extends PartyMemberMessage
 {
     String player;
 }

@@ -76,7 +76,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		soundClip = loadSoundClip(config.volume());
 		wsClient.registerMessage(Pulse.class);
-		wsClient.registerMessage(UpdatePartyPulse.class);
+		wsClient.registerMessage(ClearPartyPulse.class);
 		overlayManager.add(heartbeatOverlay);
 	}
 
@@ -86,7 +86,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		soundClip.close();
 		partyMemberPulses.clear();
 		wsClient.unregisterMessage(Pulse.class);
-		wsClient.unregisterMessage(UpdatePartyPulse.class);
+		wsClient.unregisterMessage(ClearPartyPulse.class);
 		overlayManager.remove(heartbeatOverlay);
 	}
 
@@ -95,7 +95,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if(event.getGameState().equals(GameState.HOPPING))
 		{
-			UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
+			ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName());
 			if(party.isInParty())
 			{
 				clientThread.invokeLater(() -> party.send(p));
@@ -103,7 +103,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//send a config update over the party
+	//Send a config update over the party
 	@Subscribe
 	protected void onConfigChanged(ConfigChanged event)
 	{
@@ -111,7 +111,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			return;
 		}
-		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
+		ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName());
 		if(party.isInParty())
 		{
 			clientThread.invokeLater(() -> party.send(p));
@@ -121,27 +121,27 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameTick(GameTick event)
 	{
-		if (!party.isInParty()) //return if not in party
+		if (!party.isInParty()) //Return if not in party
 			return;
 
 		if(config.alertNonRendered())
 		{
-			for (PartyMember p : party.getMembers()) //notify for each player in party (including players not rendered in the scene)
+			for (PartyMember p : party.getMembers()) //Notify for each player in party (including players not rendered in the scene)
 			{
 				notifyPlayers(p.getDisplayName());
 			}
 		}
 		else
 		{
-			for (Player p : client.getPlayers()) //notify for each player rendered in the scene
+			for (Player p : client.getPlayers()) //Notify for each player rendered in the scene
 			{
 				notifyPlayers(p.getName());
 			}
 		}
 
-		for (PartyMember p : party.getMembers()) //add a tick to last seen pulse for each player in the party (if they have sent a pulse)
+		for (PartyMember p : party.getMembers()) //Add a tick to last seen pulse for each player in the party (if they have sent a pulse)
 		{
-			if (!p.isLoggedIn()) //continue if player is not logged in
+			if (!p.isLoggedIn()) //Continue if player is not logged in
 				continue;
 			if(partyMemberPulses.containsKey(p.getDisplayName()))
 			{
@@ -149,7 +149,7 @@ public class PartyHeartbeatPlugin extends Plugin
 			}
 		}
 
-		if(config.sendPulse()) //send your pulse if enabled
+		if(config.sendPulse()) //Send your pulse if enabled
 		{
 			sendPulse();
 		}
@@ -161,7 +161,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			if (partyMemberPulses.get(p) > config.maxTicks())
 			{
-				if(config.shouldNotify()) //runelite notification
+				if(config.shouldNotify()) //RuneLite notification
 				{
 					notifier.notify("Party member " + p + " has Disconnected!");
 				}
@@ -208,7 +208,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//receives the heartbeat pulse
+	//Receives the heartbeat pulse
 	@Subscribe
 	protected void onPulse(Pulse event)
 	{
@@ -218,7 +218,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		});
 	}
 
-	//sends the heartbeat pulse
+	//Sends the heartbeat pulse
 	private void sendPulse()
 	{
 		if (party.isInParty()) //is in party
@@ -231,13 +231,13 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//clears the tracked users table if a config update is received.
+	//Clears the tracked users table if a config update is received.
 	@Subscribe
-	protected void onUpdatePartyPulse(UpdatePartyPulse event)
+	protected void onClearPartyPulse(ClearPartyPulse event)
 	{
 		clientThread.invokeLater(() ->
 		{
-			partyMemberPulses.clear();
+			partyMemberPulses.remove(event.getPlayer());
 		});
 	}
 }
