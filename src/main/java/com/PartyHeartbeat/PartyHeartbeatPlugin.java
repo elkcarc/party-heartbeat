@@ -93,7 +93,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameStateChanged(GameStateChanged event)
 	{
-		if(event.getGameState().equals(GameState.HOPPING))
+		if(event.getGameState().equals(GameState.HOPPING)) //Temporarily stop tracking player on hop
 		{
 			ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName());
 			if(party.isInParty())
@@ -159,13 +159,13 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if(partyMemberPulses.containsKey(p))
 		{
-			if (partyMemberPulses.get(p) > config.maxTicks())
+			if (partyMemberPulses.get(p) > config.maxTicks()) //Check heartbeat
 			{
 				if(config.shouldNotify()) //RuneLite notification
 				{
 					notifier.notify("Party member " + p + " has Disconnected!");
 				}
-				if (config.shouldNotifySound()) //sound notification
+				if (config.shouldNotifySound()) //Sound notification
 				{
 
 					if (soundClip != null)
@@ -178,7 +178,7 @@ public class PartyHeartbeatPlugin extends Plugin
 						soundClip.setFramePosition(0);
 						soundClip.start();
 					}
-					else //play using game sounds if file cannot be loaded
+					else //Play using game sounds if file cannot be loaded
 						client.playSoundEffect(3926);
 				}
 			}
@@ -221,7 +221,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	//Sends the heartbeat pulse
 	private void sendPulse()
 	{
-		if (party.isInParty()) //is in party
+		if (party.isInParty())
 		{
 			Pulse p = new Pulse(client.getLocalPlayer().getName()); //create pulse
 			if (p.getPlayer() != null)
@@ -231,7 +231,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//Clears the tracked users table if a config update is received.
+	//Purges the player from the list of tracked players
 	@Subscribe
 	protected void onClearPartyPulse(ClearPartyPulse event)
 	{

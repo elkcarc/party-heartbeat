@@ -11,7 +11,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 0,
             keyName = "maxTicks",
             name = "Ticks Before Alert",
-            description = "Maximum ticks without notification pulse before overlay render"
+            description = "Maximum ticks without notification pulse before alert"
     )
     default int maxTicks()
     {
@@ -33,7 +33,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 2,
             keyName = "showOverlay",
             name = "Show Overlay",
-            description = "Show the disconnected icon over the player"
+            description = "Show the disconnection icon over the player"
     )
     default boolean showOverlay()
     {
@@ -44,7 +44,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 3,
             keyName = "alertNonRendered",
             name = "Alert for Non-Rendered Players",
-            description = "Alert for players not visible on the game screen (in a different world/instance/too far to see)."
+            description = "Alert for players not visible on the game screen (in a different world/instance/too far to see)"
     )
     default boolean alertNonRendered()
     {
@@ -54,8 +54,8 @@ public interface PartyHeartbeatConfig extends Config
     @ConfigItem(
             position = 4,
             keyName = "shouldNotify",
-            name = "Runelite Notification",
-            description = "Sends a notification event (flash/sound/chatbox message) to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
+            name = "RuneLite Notification",
+            description = "Sends a notification event (flash/sound/chatbox message) on lack of heartbeat from party member (requires RuneLite notifications on)"
     )
     default boolean shouldNotify()
     {
@@ -88,7 +88,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 7,
             keyName = "iconSize",
             name = "Select Icon Size",
-            description = "Select the size you want your disconnected icon to be"
+            description = "Select the size of the disconnection icon"
     )
     default IconSize iconSize()
     {

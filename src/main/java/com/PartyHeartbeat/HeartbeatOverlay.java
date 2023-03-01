@@ -40,7 +40,7 @@ public class HeartbeatOverlay extends Overlay
         return null;
     }
 
-    //render the overlay and notify if a player is over the threshold
+    //render the overlay
     private void renderDisconnects(final Graphics2D graphics)
     {
         for (Player p : client.getPlayers())
