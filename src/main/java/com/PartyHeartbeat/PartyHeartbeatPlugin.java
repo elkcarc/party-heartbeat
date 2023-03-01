@@ -92,17 +92,10 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameState(GameState event)
 	{
+		log.info("GameState {}", client.getGameState());
 		if(event.equals(GameState.LOGGED_IN))
 		{
 			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
-		}
-		if(event.equals(GameState.HOPPING))
-		{
-			UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
-			if(party.isInParty())
-			{
-				clientThread.invokeLater(() -> party.send(p));
-			}
 		}
 	}
 
@@ -152,27 +145,30 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if(partyMemberPulses.containsKey(p.getDisplayName()))
 		{
-			if (partyMemberPulses.get(p.getDisplayName()) > config.maxTicks())
+			if(p.isLoggedIn())
 			{
-				if(config.shouldNotify()) //runelite notification
+				if (partyMemberPulses.get(p.getDisplayName()) > config.maxTicks())
 				{
-					notifier.notify("Party member " + p.getDisplayName() + " has Disconnected!");
-				}
-				if (config.shouldNotifySound()) //sound notification
-				{
-
-					if (soundClip != null)
+					if(config.shouldNotify()) //runelite notification
 					{
-						FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-						if (control != null)
-							control.setValue((float) (config.volume() / 2 - 45));
-
-						soundClip.setFramePosition(0);
-						soundClip.start();
+						notifier.notify("Party member " + p.getDisplayName() + " has Disconnected!");
 					}
-					else //play using game sounds if file cannot be loaded
-						client.playSoundEffect(3926);
+					if (config.shouldNotifySound()) //sound notification
+					{
+
+						if (soundClip != null)
+						{
+							FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+							if (control != null)
+								control.setValue((float) (config.volume() / 2 - 45));
+
+							soundClip.setFramePosition(0);
+							soundClip.start();
+						}
+						else //play using game sounds if file cannot be loaded
+							client.playSoundEffect(3926);
+					}
 				}
 			}
 		}
