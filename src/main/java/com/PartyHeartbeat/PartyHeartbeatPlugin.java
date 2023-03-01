@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -90,11 +91,19 @@ public class PartyHeartbeatPlugin extends Plugin
 	}
 
 	@Subscribe
-	protected void onGameState(GameState event)
+	protected void onGameStateChanged(GameStateChanged event)
 	{
 		if(event.equals(GameState.LOGGED_IN))
 		{
 			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
+		}
+		if(event.equals(GameState.HOPPING))
+		{
+			UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
+			if(party.isInParty())
+			{
+				clientThread.invokeLater(() -> party.send(p));
+			}
 		}
 	}
 
