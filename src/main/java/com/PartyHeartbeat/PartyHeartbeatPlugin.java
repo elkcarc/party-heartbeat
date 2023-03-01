@@ -106,14 +106,6 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			return;
 		}
-		if (Objects.equals(event.getKey(), "shouldNotifySound"))
-		{
-			if (soundClip == null || !soundClip.isOpen())
-				soundClip = loadSoundClip(config.volume());
-			else
-				soundClip.close();
-
-		}
 		UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
 		if(party.isInParty())
 		{
@@ -121,41 +113,44 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//add a tick to last seen pulse
 	@Subscribe
 	protected void onGameTick(GameTick event)
 	{
-		if (!party.isInParty())
+		if (!party.isInParty()) //return if not in party
 			return;
 
-		for (Player p : client.getPlayers())
+		for (PartyMember p : party.getMembers()) //notify for each player in party
 		{
 			notifyPlayers(p);
 		}
 
-		for (PartyMember p : party.getMembers())
+		for (PartyMember p : party.getMembers()) //add a tick to last seen pulse for each player in the party (if they have sent a pulse)
 		{
-			if (!p.isLoggedIn())
+			if (!p.isLoggedIn()) //continue if player is not logged in
 				continue;
 			if(partyMemberPulses.containsKey(p.getDisplayName()))
 			{
-				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1);
+				partyMemberPulses.put(p.getDisplayName(), partyMemberPulses.get(p.getDisplayName()) + 1); //add the tick
 			}
 		}
-		sendPulse();
+
+		if(config.sendPulse()) //send your pulse if enabled
+		{
+			sendPulse();
+		}
 	}
 
-	private void notifyPlayers(Player p)
+	private void notifyPlayers(PartyMember p)
 	{
-		if(partyMemberPulses.containsKey(p.getName()))
+		if(partyMemberPulses.containsKey(p.getDisplayName()))
 		{
-			if (partyMemberPulses.get(p.getName()) > config.maxTicks())
+			if (partyMemberPulses.get(p.getDisplayName()) > config.maxTicks())
 			{
-				if(config.shouldNotify())
+				if(config.shouldNotify()) //runelite notification
 				{
-					notifier.notify("Party member " + p.getName() + " has Disconnected!");
+					notifier.notify("Party member " + p.getDisplayName() + " has Disconnected!");
 				}
-				if (config.shouldNotifySound())
+				if (config.shouldNotifySound()) //sound notification
 				{
 
 					if (soundClip != null)
@@ -168,7 +163,7 @@ public class PartyHeartbeatPlugin extends Plugin
 						soundClip.setFramePosition(0);
 						soundClip.start();
 					}
-					else
+					else //play using game sounds if file cannot be loaded
 						client.playSoundEffect(3926);
 				}
 			}
@@ -198,28 +193,25 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	//receives the heartbeat pulse (set last seen pulse to 0
+	//receives the heartbeat pulse
 	@Subscribe
 	protected void onPulse(Pulse event)
 	{
 		clientThread.invokeLater(() ->
 		{
-			partyMemberPulses.put(event.getPlayer(), 0);
+			partyMemberPulses.put(event.getPlayer(), 0); //set last seen tick to 0
 		});
 	}
 
 	//sends the heartbeat pulse
 	private void sendPulse()
 	{
-		if (party.isInParty())
+		if (party.isInParty()) //is in party
 		{
-			if(config.sendPulse())
+			Pulse p = new Pulse(client.getLocalPlayer().getName()); //create pulse
+			if (p.getPlayer() != null)
 			{
-				Pulse p = new Pulse(client.getLocalPlayer().getName());
-				if (p.getPlayer() != null)
-				{
-					clientThread.invokeLater(() -> party.send(p));
-				}
+				clientThread.invokeLater(() -> party.send(p)); //send
 			}
 		}
 	}
