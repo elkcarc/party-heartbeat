@@ -93,11 +93,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameStateChanged(GameStateChanged event)
 	{
-		if(event.equals(GameState.LOGGED_IN))
-		{
-			partyMemberPulses.put(client.getLocalPlayer().getName(), 0);
-		}
-		if(event.equals(GameState.HOPPING))
+		if(event.getGameState().equals(GameState.HOPPING))
 		{
 			UpdatePartyPulse p = new UpdatePartyPulse(client.getLocalPlayer().getName());
 			if(party.isInParty())
