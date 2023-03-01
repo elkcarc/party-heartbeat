@@ -120,9 +120,19 @@ public class PartyHeartbeatPlugin extends Plugin
 		if (!party.isInParty()) //return if not in party
 			return;
 
-		for (PartyMember p : party.getMembers()) //notify for each player in party
+		if(config.alertNonRendered())
 		{
-			notifyPlayers(p);
+			for (PartyMember p : party.getMembers()) //notify for each player in party (including players not rendered in the scene)
+			{
+				notifyPlayers(p.getDisplayName());
+			}
+		}
+		else
+		{
+			for (Player p : client.getPlayers()) //notify for each player rendered in the scene
+			{
+				notifyPlayers(p.getName());
+			}
 		}
 
 		for (PartyMember p : party.getMembers()) //add a tick to last seen pulse for each player in the party (if they have sent a pulse)
@@ -141,34 +151,31 @@ public class PartyHeartbeatPlugin extends Plugin
 		}
 	}
 
-	private void notifyPlayers(PartyMember p)
+	private void notifyPlayers(String p)
 	{
-		if(partyMemberPulses.containsKey(p.getDisplayName()))
+		if(partyMemberPulses.containsKey(p))
 		{
-			if(p.isLoggedIn())
+			if (partyMemberPulses.get(p) > config.maxTicks())
 			{
-				if (partyMemberPulses.get(p.getDisplayName()) > config.maxTicks())
+				if(config.shouldNotify()) //runelite notification
 				{
-					if(config.shouldNotify()) //runelite notification
+					notifier.notify("Party member " + p + " has Disconnected!");
+				}
+				if (config.shouldNotifySound()) //sound notification
+				{
+
+					if (soundClip != null)
 					{
-						notifier.notify("Party member " + p.getDisplayName() + " has Disconnected!");
+						FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+						if (control != null)
+							control.setValue((float) (config.volume() / 2 - 45));
+
+						soundClip.setFramePosition(0);
+						soundClip.start();
 					}
-					if (config.shouldNotifySound()) //sound notification
-					{
-
-						if (soundClip != null)
-						{
-							FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-							if (control != null)
-								control.setValue((float) (config.volume() / 2 - 45));
-
-							soundClip.setFramePosition(0);
-							soundClip.start();
-						}
-						else //play using game sounds if file cannot be loaded
-							client.playSoundEffect(3926);
-					}
+					else //play using game sounds if file cannot be loaded
+						client.playSoundEffect(3926);
 				}
 			}
 		}

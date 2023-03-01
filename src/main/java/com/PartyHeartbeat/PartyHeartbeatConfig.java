@@ -10,7 +10,7 @@ public interface PartyHeartbeatConfig extends Config
     @ConfigItem(
             position = 0,
             keyName = "maxTicks",
-            name = "Ticks before Alert",
+            name = "Ticks Before Alert",
             description = "Maximum ticks without notification pulse before overlay render"
     )
     default int maxTicks()
@@ -42,8 +42,19 @@ public interface PartyHeartbeatConfig extends Config
 
     @ConfigItem(
             position = 3,
+            keyName = "alertNonRendered",
+            name = "Alert for Non-Rendered Players",
+            description = "Alert for players not visible on the game screen (in a different world/instance/too far to see). Will cause alerts on World Hops"
+    )
+    default boolean alertNonRendered()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 4,
             keyName = "shouldNotify",
-            name = "Runelite notification",
+            name = "Runelite Notification",
             description = "Sends a notification event (flash/sound/chatbox message) to Runelite on lack of heartbeat from party member (requires Runelite notifications on)"
     )
     default boolean shouldNotify()
@@ -52,9 +63,9 @@ public interface PartyHeartbeatConfig extends Config
     }
 
     @ConfigItem(
-            position = 4,
+            position = 5,
             keyName = "shouldNotifySound",
-            name = "Notification Sound on disconnect",
+            name = "Notification Sound on Disconnect",
             description = "Sends a notification sound on party member DC"
     )
     default boolean shouldNotifySound()
@@ -63,9 +74,9 @@ public interface PartyHeartbeatConfig extends Config
     }
 
     @ConfigItem(
-            position = 5,
+            position = 6,
             keyName = "volume",
-            name = "Sound volume",
+            name = "Sound Volume",
             description = "Sets the notification volume (requires client restart)"
     )
     default int volume()
@@ -74,9 +85,9 @@ public interface PartyHeartbeatConfig extends Config
     }
 
     @ConfigItem(
-            position = 6,
+            position = 7,
             keyName = "iconSize",
-            name = "Select the icon size",
+            name = "Select Icon Size",
             description = "Select the size you want your disconnected icon to be"
     )
     default IconSize iconSize()
