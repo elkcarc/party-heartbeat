@@ -44,7 +44,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 3,
             keyName = "alertNonRendered",
             name = "Alert for Non-Rendered Players",
-            description = "Alert for players not visible on the game screen (in a different world/instance/too far to see)"
+            description = "Alert for players not visible on the game screen (logged out/in a different world/instance/too far to see)"
     )
     default boolean alertNonRendered()
     {
