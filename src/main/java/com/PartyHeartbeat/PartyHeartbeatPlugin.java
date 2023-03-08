@@ -159,7 +159,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if(partyMemberPulses.containsKey(p))
 		{
-			if (partyMemberPulses.get(p) > config.maxTicks()) //Check heartbeat
+			if (partyMemberPulses.get(p) > config.maxTicks() && partyMemberPulses.get(p) <= config.timeout()) //Check heartbeat
 			{
 				if(config.shouldNotify()) //RuneLite notification
 				{

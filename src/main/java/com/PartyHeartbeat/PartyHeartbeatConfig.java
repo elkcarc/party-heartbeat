@@ -86,6 +86,14 @@ public interface PartyHeartbeatConfig extends Config
 
     @ConfigItem(
             position = 7,
+            keyName = "timeout",
+            name = "Notification Timeout",
+            description = "Sets the notification timeout after a disconnect is connected"
+    )
+    default int timeout() { return 20; }
+
+    @ConfigItem(
+            position = 8,
             keyName = "iconSize",
             name = "Select Icon Size",
             description = "Select the size of the disconnection icon"
