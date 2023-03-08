@@ -93,13 +93,9 @@ public class PartyHeartbeatPlugin extends Plugin
 	@Subscribe
 	protected void onGameStateChanged(GameStateChanged event)
 	{
-		if(event.getGameState().equals(GameState.HOPPING)) //Temporarily stop tracking player on hop
+		if(event.getGameState().equals(GameState.HOPPING) || event.getGameState().equals(GameState.LOGIN_SCREEN)) //Stop tracking player on hop/regular logout
 		{
-			ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName());
-			if(party.isInParty())
-			{
-				clientThread.invokeLater(() -> party.send(p));
-			}
+			sendClearPartyPulse();
 		}
 	}
 
@@ -111,11 +107,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			return;
 		}
-		ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName());
-		if(party.isInParty())
-		{
-			clientThread.invokeLater(() -> party.send(p));
-		}
+		sendClearPartyPulse();
 	}
 
 	@Subscribe
@@ -238,5 +230,18 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			partyMemberPulses.remove(event.getPlayer());
 		});
+	}
+
+	//Sends the clear party pulse
+	private void sendClearPartyPulse()
+	{
+		if (party.isInParty())
+		{
+			Pulse p = new Pulse(client.getLocalPlayer().getName()); //create pulse
+			if (p.getPlayer() != null)
+			{
+				clientThread.invokeLater(() -> party.send(p)); //send
+			}
+		}
 	}
 }
