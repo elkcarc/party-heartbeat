@@ -88,7 +88,7 @@ public interface PartyHeartbeatConfig extends Config
             position = 7,
             keyName = "timeout",
             name = "Notification Timeout",
-            description = "Sets the notification timeout after a disconnect is connected"
+            description = "Sets the notification timeout in ticks after a disconnect alert occurs"
     )
     default int timeout() { return 20; }
 
