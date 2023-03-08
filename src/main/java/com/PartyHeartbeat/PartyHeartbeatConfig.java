@@ -48,7 +48,7 @@ public interface PartyHeartbeatConfig extends Config
     )
     default boolean alertNonRendered()
     {
-        return false;
+        return true;
     }
 
     @ConfigItem(

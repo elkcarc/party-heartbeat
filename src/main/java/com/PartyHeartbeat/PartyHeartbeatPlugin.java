@@ -128,15 +128,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			for (PartyMember p : party.getMembers()) //Notify for each player in party (including players not rendered in the scene)
 			{
-				if (p == null)
-				{
-					continue;
-				}
-
-				if (p.isLoggedIn()) // FIXME Still thinks the players are logged in when they aren't
-				{
-					notifyPlayers(p.getDisplayName());
-				}
+				notifyPlayers(p.getDisplayName());
 			}
 		}
 		else
