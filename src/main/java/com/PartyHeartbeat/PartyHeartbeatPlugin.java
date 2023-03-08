@@ -128,7 +128,15 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			for (PartyMember p : party.getMembers()) //Notify for each player in party (including players not rendered in the scene)
 			{
-				notifyPlayers(p.getDisplayName());
+				if (p == null)
+				{
+					continue;
+				}
+
+				if (p.isLoggedIn()) // FIXME Still thinks the players are logged in when they aren't
+				{
+					notifyPlayers(p.getDisplayName());
+				}
 			}
 		}
 		else
@@ -167,7 +175,6 @@ public class PartyHeartbeatPlugin extends Plugin
 				}
 				if (config.shouldNotifySound()) //Sound notification
 				{
-
 					if (soundClip != null)
 					{
 						FloatControl control = (FloatControl) soundClip.getControl(FloatControl.Type.MASTER_GAIN);
