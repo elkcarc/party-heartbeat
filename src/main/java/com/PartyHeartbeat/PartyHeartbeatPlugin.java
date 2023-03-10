@@ -205,7 +205,10 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		clientThread.invokeLater(() ->
 		{
-			partyMemberPulses.put(event.getPlayer(), 0); //set last seen tick to 0
+			if(!event.getPlayer().equals(client.getLocalPlayer().getName())) //if player is not local player
+			{
+				partyMemberPulses.put(event.getPlayer(), 0); //set last seen tick to 0
+			}
 		});
 	}
 
@@ -237,7 +240,7 @@ public class PartyHeartbeatPlugin extends Plugin
 	{
 		if (party.isInParty())
 		{
-			Pulse p = new Pulse(client.getLocalPlayer().getName()); //create pulse
+			ClearPartyPulse p = new ClearPartyPulse(client.getLocalPlayer().getName()); //create pulse
 			if (p.getPlayer() != null)
 			{
 				clientThread.invokeLater(() -> party.send(p)); //send
