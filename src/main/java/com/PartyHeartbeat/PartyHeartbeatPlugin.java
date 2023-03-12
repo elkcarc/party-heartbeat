@@ -9,6 +9,7 @@ import javax.sound.sampled.*;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
@@ -141,9 +142,15 @@ public class PartyHeartbeatPlugin extends Plugin
 			}
 		}
 
-		if(config.sendPulse()) //Send your pulse if enabled
+		if(config.sendPulse() == SendStatus.ON) //Send your pulse if enabled or if HC/GHC
 		{
 			sendPulse();
+		}
+		else if(config.sendPulse() == SendStatus.HCIM) {
+			if(client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 3 || client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 5)
+			{
+				sendPulse();
+			}
 		}
 	}
 

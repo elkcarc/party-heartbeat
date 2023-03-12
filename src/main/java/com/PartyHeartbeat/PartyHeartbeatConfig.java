@@ -22,11 +22,11 @@ public interface PartyHeartbeatConfig extends Config
             position = 1,
             keyName = "sendPulse",
             name = "Send Status",
-            description = "Decides whether or not to send connection status (disable if you don't care about disconnecting)"
+            description = "Decides whether or not to send connection status"
     )
-    default boolean sendPulse()
+    default SendStatus sendPulse()
     {
-        return true;
+        return SendStatus.HCIM;
     }
 
     @ConfigItem(
