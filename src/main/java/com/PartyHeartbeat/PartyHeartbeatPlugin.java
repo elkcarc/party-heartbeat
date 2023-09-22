@@ -146,7 +146,7 @@ public class PartyHeartbeatPlugin extends Plugin
 		{
 			sendPulse();
 		}
-		else if(config.sendPulse() == SendStatus.HCIM) {
+		else if(config.sendPulse() == SendStatus.HC) {
 			if(client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 3 || client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 5)
 			{
 				sendPulse();

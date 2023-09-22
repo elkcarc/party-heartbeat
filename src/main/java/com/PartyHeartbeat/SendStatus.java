@@ -1,20 +1,21 @@
 package com.PartyHeartbeat;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum SendStatus
 {
-    HCIM("Hardcore", 0),
-    ON("On", 1),
-    OFF("Off", 2);
+    HC("HC"),
+    ON("On"),
+    OFF("Off");
 
     private final String name;
-    private final int id;
 
-    SendStatus(String name, int id)
+    @Override
+    public String toString()
     {
-        this.name = name;
-        this.id = id;
+        return name;
     }
 }

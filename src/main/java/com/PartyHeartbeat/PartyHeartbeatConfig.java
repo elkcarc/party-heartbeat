@@ -26,7 +26,7 @@ public interface PartyHeartbeatConfig extends Config
     )
     default SendStatus sendPulse()
     {
-        return SendStatus.HCIM;
+        return SendStatus.HC;
     }
 
     @ConfigItem(
