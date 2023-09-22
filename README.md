@@ -3,7 +3,8 @@ Displays an overlay and sends a notification when party members have not sent a 
 
 ![party heartbeat](https://user-images.githubusercontent.com/75790554/221335112-20a03d3f-2400-4544-9ebf-d3574d3ac1ee.gif)
 
-![image](https://user-images.githubusercontent.com/42009371/223706297-d7c2ffc9-c13b-48a2-bc33-007498f437d4.png)
+![image](https://github.com/elkcarc/party-heartbeat/assets/42009371/f94c0ccb-d603-4089-95ed-b0419d99eb0f)
+
 
 
 
