@@ -15,7 +15,7 @@ F.A.Q.
 
 Sometimes the party plugin can be a little janky, and will have multiple instances of the same user. If this happens, join another party channel and it should resolve itself.
 
-Testing the plugin is as simple as getting a friend in the party with the plugin on to close their client.
+Testing the plugin is as simple as getting a friend in the party with the "Send Status" setting on to close their client.
 
 The runelite notifications are disabled by default.
 If you want to use the runelite notification settings, they can be found at:
